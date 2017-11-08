@@ -3,9 +3,17 @@ package com.boomhe.mymvp.module.base;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
+import com.boomhe.mymvp.AndroidApplication;
 import com.boomhe.mymvp.R;
+import com.boomhe.mymvp.injector.components.ApplicationComponent;
+import com.boomhe.mymvp.injector.modules.ActivityModule;
+import com.boomhe.mymvp.utils.SwipeRefreshHelper;
 import com.boomhe.mymvp.widget.EmptyLayout;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -78,15 +86,84 @@ public abstract class BaseActivity< T extends IBasePresenter > extends RxAppComp
      */
     private void initSwipeRefresh(){
         if (mSwipeRefresh != null) {
+            SwipeRefreshHelper.init(mSwipeRefresh, new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    updateViews(true);
+                }
+            });
+        }
+    }
 
+    protected ApplicationComponent getAppComponent(){
+        return AndroidApplication.getAppComponent();
+    }
+
+    /**
+     * 获取 ActivityModule
+     * @return
+     */
+    protected ActivityModule getActivityModule(){
+        return new ActivityModule(this);
+    }
+
+    /**
+     * 初始化 Toolbar
+     * @param toolbar
+     * @param homeAsUpEnabled
+     * @param title
+     */
+    protected void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, String title){
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
+    }
+
+    protected void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, int resTitle){
+        initToolBar(toolbar,homeAsUpEnabled,getString(resTitle));
+    }
+
+
+    /**
+     * 添加 Fragment
+     * @param containerViewId
+     * @param fragment
+     * @param tag
+     */
+    protected void addFragment(int containerViewId, Fragment fragment, String tag){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        // 设置tag，不然下面 findFragmentByTag(tag)找不到
+        transaction.add(containerViewId,fragment,tag);
+        transaction.addToBackStack(tag);
+        transaction.commit();
+    }
+
+    /**
+     * 替换 fragment
+     * @param containerViewId
+     * @param fragment
+     * @param tag
+     */
+    protected void replaceFragment(int containerViewId, Fragment fragment, String tag){
+        if (getSupportFragmentManager().findFragmentByTag(tag) == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            // 设置 Tag
+            transaction.replace(containerViewId,fragment,tag);
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            // 设置返回栈中的 Tag
+            transaction.addToBackStack(tag);
+            transaction.commit();
+        }else{
+            // 存在则弹出在它上面的所有fragment，并显示对应fragment
+            getSupportFragmentManager().popBackStack(tag,0);
         }
     }
 
     /**
      * 更新视图控件
-     * @param b
+     * @param isRefresh
      */
-    protected abstract void updateViews(boolean b);
+    protected abstract void updateViews(boolean isRefresh);
 
     @Override
     public void showLoading() {
@@ -120,7 +197,7 @@ public abstract class BaseActivity< T extends IBasePresenter > extends RxAppComp
 
     @Override
     public <T> LifecycleTransformer<T> bindToLife() {
-        return this.bindToLifecycle();
+        return this.<T>bindToLifecycle();
     }
 
     @Override
@@ -131,5 +208,14 @@ public abstract class BaseActivity< T extends IBasePresenter > extends RxAppComp
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

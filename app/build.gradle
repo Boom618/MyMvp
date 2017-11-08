@@ -29,30 +29,30 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "com.android.support:recyclerview-v7:${rootProject.ext.support}"
-
     // RxLifecycle ：防止 RxJava 和 RxAndroid 中 subscription 导致内存泄漏
     implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.0'
     implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.0'
-
     // rxJava
     implementation 'io.reactivex:rxjava:1.3.3'
-
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.trello:rxlifecycle:1.0'
+    implementation 'com.trello:rxlifecycle-components:1.0'
     // rxAndroid
     implementation 'io.reactivex:rxandroid:1.2.1'
-
     // butter knife
     implementation 'com.jakewharton:butterknife:8.8.1'
-
     // loading
     implementation 'com.github.ybq:Android-SpinKit:1.1.0'
-
     // inject 注解 ( BaseActivity )
     implementation 'javax.inject:javax.inject:1'
-
+    // dagger 依赖注入库
+    implementation 'com.google.dagger:dagger:2.12'
     // recyclerView-animators
-    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
-
+    implementation 'jp.wasabeef:recyclerview-animators:2.2.3'
+    // 用于生成application类
+    implementation("com.tencent.tinker:tinker-android-lib:1.7.7") { changing = true }
     // block canary
     debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
     releaseImplementation 'com.github.markzhai:blockcanary-no-op:1.5.0'
+    implementation project(':tinkerlib')
 }
