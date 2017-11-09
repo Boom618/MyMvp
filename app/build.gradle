@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
 }
 
 dependencies {
@@ -37,10 +41,13 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'com.trello:rxlifecycle:1.0'
     implementation 'com.trello:rxlifecycle-components:1.0'
+    implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
     // rxAndroid
     implementation 'io.reactivex:rxandroid:1.2.1'
     // butter knife
     implementation 'com.jakewharton:butterknife:8.8.1'
+    // toast
+    implementation 'com.github.GrenderG:Toasty:1.1.4'
     // loading
     implementation 'com.github.ybq:Android-SpinKit:1.1.0'
     // inject 注解 ( BaseActivity )
