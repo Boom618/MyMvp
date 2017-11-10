@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.boomhe.mymvp.AndroidApplication;
 import com.boomhe.mymvp.R;
+import com.boomhe.mymvp.injector.components.ApplicationComponent;
+import com.boomhe.mymvp.utils.SwipeRefreshHelper;
 import com.boomhe.mymvp.widget.EmptyLayout;
 import com.trello.rxlifecycle.components.support.RxFragment;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -22,10 +25,10 @@ import butterknife.ButterKnife;
 
 /**
  * @author boomhe on 2017/11/9.
- * Fragment 基类
+ *         Fragment 基类
  */
 
-public abstract class BaseFragment< T extends IBasePresenter> extends RxFragment implements IBaseView, EmptyLayout.OnRetryListener {
+public abstract class BaseFragment<T extends IBasePresenter> extends RxFragment implements IBaseView, EmptyLayout.OnRetryListener {
 
     @BindView(R.id.empty_layout)
     EmptyLayout mEmptyLayout;
@@ -56,8 +59,8 @@ public abstract class BaseFragment< T extends IBasePresenter> extends RxFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mRootView == null) {
-            mRootView = inflater.inflate(attachLayoutRes(),null);
-            ButterKnife.bind(this,mRootView);
+            mRootView = inflater.inflate(attachLayoutRes(), null);
+            ButterKnife.bind(this, mRootView);
             initInjector();
             initViews();
             initSwipeRefresh();
@@ -80,16 +83,23 @@ public abstract class BaseFragment< T extends IBasePresenter> extends RxFragment
 
     /**
      * 设置懒 Fragment 加载
+     *
      * @param isVisibleToUser
      */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isVisible() && mRootView != null && !mIsMulti) {
+            mIsMulti = true;
+            updateViews(false);
+        } else {
+            super.setUserVisibleHint(isVisibleToUser);
+        }
     }
 
     /**
      * Layout
-     * @return  XML 布局
+     *
+     * @return XML 布局
      */
     protected abstract int attachLayoutRes();
 
@@ -110,30 +120,43 @@ public abstract class BaseFragment< T extends IBasePresenter> extends RxFragment
 
     /**
      * 更新视图控件
+     *
      * @param isRefresh
      */
     protected abstract void updateViews(boolean isRefresh);
 
 
-
-
     @Override
     public void showLoading() {
-
+        if (mEmptyLayout != null) {
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
+            SwipeRefreshHelper.enableRefresh(mSwipeRefresh, false);
+        }
     }
 
     @Override
     public void hideLoading() {
-
+        if (mEmptyLayout != null) {
+            mEmptyLayout.hideView();
+            SwipeRefreshHelper.enableRefresh(mSwipeRefresh, true);
+            SwipeRefreshHelper.controlRefresh(mSwipeRefresh, false);
+        }
     }
 
     @Override
     public void showNetError() {
+        if (mEmptyLayout != null) {
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
+            mEmptyLayout.setRetryListener(this);
+        }
 
     }
 
     @Override
     public void finishRefresh() {
+        if (mSwipeRefresh != null) {
+            mSwipeRefresh.setRefreshing(false);
+        }
 
     }
 
@@ -144,6 +167,10 @@ public abstract class BaseFragment< T extends IBasePresenter> extends RxFragment
 
     @Override
     public void onRetry() {
+        updateViews(false);
+    }
 
+    protected ApplicationComponent getAppComponent() {
+        return AndroidApplication.getAppComponent();
     }
 }
