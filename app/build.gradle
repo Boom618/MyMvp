@@ -48,6 +48,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     // toast
     implementation 'com.github.GrenderG:Toasty:1.1.4'
+    // slider 图片轮播
+    implementation 'com.daimajia.slider:library:1.1.5'
     // loading
     implementation 'com.github.ybq:Android-SpinKit:1.1.0'
     // inject 注解 ( BaseActivity )
@@ -57,9 +59,10 @@ dependencies {
     // recyclerView-animators
     implementation 'jp.wasabeef:recyclerview-animators:2.2.3'
     // 用于生成application类
-    implementation("com.tencent.tinker:tinker-android-lib:1.7.7") { changing = true }
+    implementation('com.tencent.tinker:tinker-android-lib:1.7.7') { changing = true }
     // block canary
     debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
     releaseImplementation 'com.github.markzhai:blockcanary-no-op:1.5.0'
     implementation project(':tinkerlib')
+    implementation project(':recyclerviewhelper')
 }

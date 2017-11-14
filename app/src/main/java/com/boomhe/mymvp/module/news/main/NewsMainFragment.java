@@ -1,9 +1,9 @@
 package com.boomhe.mymvp.module.news.main;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.boomhe.mymvp.R;
 import com.boomhe.mymvp.local.NewsTypeInfo;
 import com.boomhe.mymvp.module.base.BaseFragment;
 import com.boomhe.mymvp.module.base.IRxBusPresenter;
@@ -25,7 +25,7 @@ public class NewsMainFragment extends BaseFragment<IRxBusPresenter> implements I
 
     @Override
     protected int attachLayoutRes() {
-        return 0;
+        return R.layout.fragment_news_main;
     }
 
     @Override

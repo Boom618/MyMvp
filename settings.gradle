@@ -1,1 +1,1 @@
-include ':app', ':tinkerlib'
+include ':app', ':tinkerlib', ':recyclerviewhelper'
