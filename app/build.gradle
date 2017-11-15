@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion rootProject.ext.compileSdk
@@ -17,6 +18,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    greendao {
+        schemaVersion 4
+        // 自定义路径
+//            daoPackage 'com.example.yyf.mvpdemo.greendao.gen'
+//            targetGenDir 'src/main/java'
     }
 
     packagingOptions {
@@ -52,6 +60,12 @@ dependencies {
     implementation 'com.daimajia.slider:library:1.1.5'
     // loading
     implementation 'com.github.ybq:Android-SpinKit:1.1.0'
+    // logger
+    implementation 'com.orhanobut:logger:2.1.1'
+    // green dao
+    implementation 'org.greenrobot:greendao:3.2.2'
+    // file picker
+    implementation 'com.github.angads25:filepicker:1.1.1'
     // inject 注解 ( BaseActivity )
     implementation 'javax.inject:javax.inject:1'
     // dagger 依赖注入库

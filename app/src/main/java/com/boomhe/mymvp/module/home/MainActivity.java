@@ -41,14 +41,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        initDrawerLayout(drawer,navigationView);
+        initDrawerLayout(drawer, navigationView);
 
     }
 
     @Override
     protected void updateViews(boolean isRefresh) {
         navigationView.setCheckedItem(R.id.nav_news);
-        addFragment(R.id.fl_container,null,"News");
+        addFragment(R.id.fl_container, new NewsMainFragment(), "News");
     }
 
     @Override
@@ -56,10 +56,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         int entryCount = getSupportFragmentManager().getBackStackEntryCount();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }else if(entryCount == 1){
+        } else if (entryCount == 1) {
             // 如果剩一个说明在主页，提示按两次退出app
             exit();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -91,10 +91,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * 初始化 DrawerLayout
+     *
      * @param drawerLayout
      * @param navView
      */
-    private void initDrawerLayout(DrawerLayout drawerLayout, NavigationView navView){
+    private void initDrawerLayout(DrawerLayout drawerLayout, NavigationView navView) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WindowManager.LayoutParams attributes = getWindow().getAttributes();
             attributes.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | attributes.flags);
