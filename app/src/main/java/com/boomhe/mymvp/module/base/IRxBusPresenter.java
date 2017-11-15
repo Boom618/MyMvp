@@ -4,13 +4,14 @@ import rx.functions.Action1;
 
 /**
  * @author boomhe on 2017/11/13.
- * RxBus Presenter
+ *         RxBus Presenter
  */
 
-public interface IRxBusPresenter extends IBasePresenter{
+public interface IRxBusPresenter extends IBasePresenter {
 
     /**
      * 注册
+     *
      * @param eventType
      * @param action1
      * @param <T>

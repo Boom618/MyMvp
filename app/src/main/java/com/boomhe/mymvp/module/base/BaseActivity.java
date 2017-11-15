@@ -25,10 +25,10 @@ import butterknife.ButterKnife;
 
 /**
  * @author boomhe on 2017/11/6.
- * 基类 Activity
+ *         基类 Activity
  */
 
-public abstract class BaseActivity< T extends IBasePresenter > extends RxAppCompatActivity implements IBaseView,EmptyLayout.OnRetryListener {
+public abstract class BaseActivity<T extends IBasePresenter> extends RxAppCompatActivity implements IBaseView, EmptyLayout.OnRetryListener {
 
 
     /**
@@ -66,6 +66,7 @@ public abstract class BaseActivity< T extends IBasePresenter > extends RxAppComp
 
     /**
      * 绑定布局文件
+     *
      * @return
      */
     @LayoutRes
@@ -84,7 +85,7 @@ public abstract class BaseActivity< T extends IBasePresenter > extends RxAppComp
     /**
      * 初始化下拉刷新
      */
-    private void initSwipeRefresh(){
+    private void initSwipeRefresh() {
         if (mSwipeRefresh != null) {
             SwipeRefreshHelper.init(mSwipeRefresh, new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -95,72 +96,77 @@ public abstract class BaseActivity< T extends IBasePresenter > extends RxAppComp
         }
     }
 
-    protected ApplicationComponent getAppComponent(){
+    protected ApplicationComponent getAppComponent() {
         return AndroidApplication.getAppComponent();
     }
 
     /**
      * 获取 ActivityModule
+     *
      * @return
      */
-    protected ActivityModule getActivityModule(){
+    protected ActivityModule getActivityModule() {
         return new ActivityModule(this);
     }
 
     /**
      * 初始化 Toolbar
+     *
      * @param toolbar
      * @param homeAsUpEnabled
      * @param title
      */
-    protected void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, String title){
+    protected void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, String title) {
         toolbar.setTitle(title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
     }
 
-    protected void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, int resTitle){
-        initToolBar(toolbar,homeAsUpEnabled,getString(resTitle));
+    protected void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, int resTitle) {
+        initToolBar(toolbar, homeAsUpEnabled, getString(resTitle));
     }
 
 
     /**
      * 添加 Fragment
+     *
      * @param containerViewId
      * @param fragment
      * @param tag
      */
-    protected void addFragment(int containerViewId, Fragment fragment, String tag){
+    protected void addFragment(int containerViewId, Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         // 设置tag，不然下面 findFragmentByTag(tag)找不到
-        transaction.add(containerViewId,fragment,tag);
+        transaction.add(containerViewId, fragment, tag);
         transaction.addToBackStack(tag);
         transaction.commit();
     }
 
     /**
      * 替换 fragment
+     *
      * @param containerViewId
      * @param fragment
      * @param tag
      */
-    protected void replaceFragment(int containerViewId, Fragment fragment, String tag){
+    protected void replaceFragment(int containerViewId, Fragment fragment, String tag) {
         if (getSupportFragmentManager().findFragmentByTag(tag) == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             // 设置 Tag
-            transaction.replace(containerViewId,fragment,tag);
+            transaction.replace(containerViewId, fragment, tag);
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             // 设置返回栈中的 Tag
             transaction.addToBackStack(tag);
             transaction.commit();
-        }else{
+        } else {
             // 存在则弹出在它上面的所有fragment，并显示对应fragment
-            getSupportFragmentManager().popBackStack(tag,0);
+            getSupportFragmentManager().popBackStack(tag, 0);
         }
     }
 
     /**
      * 更新视图控件
+     *
      * @param isRefresh
      */
     protected abstract void updateViews(boolean isRefresh);
