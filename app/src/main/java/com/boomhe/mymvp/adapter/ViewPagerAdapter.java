@@ -74,6 +74,12 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         return index;
     }
 
+    public void addItem(Fragment fragment,String title){
+        fragments.add(fragment);
+        mTitles.add(title);
+        notifyDataSetChanged();
+    }
+
     /**
      * 交换列表数据位置
      * @param fromPos

@@ -82,5 +82,12 @@ public class NewsMainFragment extends BaseFragment<IRxBusPresenter> implements I
      */
     private void handleChannelEvent(ChannelEvent channelEvent) {
 
+        switch (channelEvent.eventType) {
+            case ChannelEvent.ADD_EVENT:
+                //mPagerAdapter.addItem();
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -3,6 +3,8 @@ package com.boomhe.mymvp.module.news.main;
 import com.boomhe.mymvp.module.base.IRxBusPresenter;
 import com.boomhe.mymvp.rxbus.RxBus;
 
+import java.util.ArrayList;
+
 import rx.functions.Action1;
 
 /**
@@ -15,6 +17,7 @@ public class NewsMainPresenter implements IRxBusPresenter {
     private final INewsMainView mView;
     //    private final NewsTypeInfoDao mDbDao;
     private final RxBus mRxBus;
+
 
     public NewsMainPresenter(INewsMainView view, RxBus rxBus) {
         mView = view;
